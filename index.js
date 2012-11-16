@@ -1,0 +1,1 @@
+module.exports = process.env.RANGED_COV ? require('./lib-cov') : require('./lib');
