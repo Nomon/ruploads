@@ -6,6 +6,7 @@
   , "keywords": ["range", "upload", "express", "connect", ""]
   , "homepage": "https://github.com/Nomon/ranged-uploads"
   , "dependencies": {
+      "serializer":"*"
   }
   , "devDependencies": {
     "mocha": "1.6.0"
