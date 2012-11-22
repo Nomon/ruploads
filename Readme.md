@@ -6,6 +6,9 @@ ruploads middleware adds support for resumable uploads via Content-Range and Ran
 ruploads comes with an IOS client, browser client utilizing HTML5 File api, the node.js client extends superagent with resume capabilities and ads support
 for streamed uploads for extremely large files.
 
+When an upload completes, either via the first request or later resume the results are delivered to the next middleware in chain in
+the same req.files format express.js uses through formidable.
+
 ### HTTP Flow - asking upload status, target identified by ETag:
 
 ```
