@@ -1,10 +1,10 @@
 {
-    "name": "ranged-uploads"
+    "name": "ruploads"
   , "description": "connect.js/express.js compatible resumable uploads with mongodb GridFS and S3 support. Using Range: and Content-Range headers"
   , "version": "0.0.1"
   , "author": "Matti Savolainen <matti@applifier.com>"
-  , "keywords": ["range", "upload", "express", "connect", ""]
-  , "homepage": "https://github.com/Nomon/ranged-uploads"
+  , "keywords": ["range", "upload", "express", "connect", "upload","resume"]
+  , "homepage": "https://github.com/Nomon/ruploads"
   , "dependencies": {
       "serializer":"*"
   }
@@ -17,10 +17,10 @@
   , "engines": { "node": ">= 0.2.0" }
   , "scripts": { "test": "make test" }
   , "bugs": {
-    "url":"https://github.com/Nomon/ranged-uploads/issues/new"
+    "url":"https://github.com/Nomon/ruploads/issues/new"
   }
   , "repository": {
       "type": "git"
-    , "url": "git://github.com/Nomon/ranged-uploads.git"
+    , "url": "git://github.com/Nomon/ruploads.git"
   }
 }
