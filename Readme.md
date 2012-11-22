@@ -1,12 +1,86 @@
-# ranged-uploads
+# ruploads
 
-## About
+## About ruploads
 
-Supports resumable uploads on HTTP level using the Range: and Content-Range: HTTP headers. Support backends are:
-- filesystem
-- s3
-- gridfs
+ruploads middleware adds support for resumable uploads via Content-Range and Range headers using HTTP statuscode 308.
+ruploads comes with an IOS client, browser client utilizing HTML5 File api, the node.js client extends superagent with resume capabilities and ads support
+for streamed uploads for extremely large files.
 
-and any combination of the above.
+### HTTP Flow - asking upload status, target identified by ETag:
 
-[![Build Status](https://secure.travis-ci.org/Nomon/ranged-uploads.png)](http://travis-ci.org/Nomon/ranged-uploads)
+```
+PUT /uploads HTTP/1.1
+Host: localhost:3000
+Content-Length: 0
+Content-Range: bytes */123445678
+ETag: "abcdefg"
+```
+
+### HTTP Flow - the server responds with the range it already has for "abcdefg":
+
+```
+HTTP/1.1 308 Resume Incomplete
+Content-Length: 0
+Range: 0-12345664
+ETag: "abcdefg"
+```
+
+## Usage
+
+Basic middleware usage, for options see code comments.
+```js
+var express = require('express')
+  , ruploads = require('ruploads');
+
+var app = express();
+var uploads = ruploads({});
+/*
+  use uploads.set('')
+*/
+app.use(express.basicAuth('user','pass'));
+app.all('/uploads', uploads, function(req, res, next) {
+    console.log("upload complete", req.files);
+});
+```
+
+## Upload and resume HTTP request flow
+
+Client initializez a new resumable upload by issuing A PUT to the upload path:
+```   
+PUT /upload HTTP/1.1
+Host: localhost:3000
+Content-Type: application/octet-stream
+Content-Disposition: form-data; name="myfile"; filename="ad.gif"
+Content-Length: 123445678
+ETag: "etag identifying the file, like md5 or other identifier."
+```
+
+If the upload is interupted, the client can ask for the upload state:
+```
+PUT /upload HTTP/1.1
+Host: localhost:3000
+Content-Type: application/octet-stream
+Content-Disposition: form-data; name="myfile"; filename="ad.gif"
+Content-Length: 0
+Content-Range: bytes */123445678
+ETag: "etag identifying the file, like md5 or other identifier."
+```
+
+And server responds with what byte range it did already receive:
+```
+HTTP/1.1 308 Resume Incomplete
+Content-Length: 0
+Range: bytes=0-12345664
+```
+
+And the client resumes the upload from bytes 12345664:
+```
+PUT /uploads HTTP/1.1
+Host: localhost:3000
+Content-Length: 111100014
+Content-Type: application/octet-stream
+Content-Range: bytes 12345665-123445677/123445678
+ETag: "etag identifying the file, like md5 or other identifier."
+```
+
+<bytes 12345665-123445677>
