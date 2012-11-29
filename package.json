@@ -1,6 +1,6 @@
 {
     "name": "ruploads"
-  , "description": "connect.js/express.js compatible resumable uploads with mongodb GridFS and S3 support. Using Range: and Content-Range headers"
+  , "description": "connect.js/express.js compatible resumable uploads with using Range: and Content-Range headers"
   , "version": "0.0.1"
   , "author": "Matti Savolainen <matti@applifier.com>"
   , "keywords": ["range", "upload", "express", "connect", "upload","resume"]
